@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      width: 360px;
+      min-height: 400px;
+      padding: 0;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    .header {
+      padding: 16px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 20px;
+      color: #333;
+    }
+
+    .subtitle {
+      margin: 4px 0 0 0;
+      font-size: 12px;
+      color: #666;
+    }
+
+    /* Tab Navigation */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #e0e0e0;
+      background: #f8f8f8;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-size: 13px;
+      font-weight: 500;
+      color: #666;
+      transition: all 0.2s;
+    }
+
+    .tab:hover { background: #f0f0f0; }
+
+    .tab.active {
+      color: #333;
+      border-bottom: 2px solid #333;
+      background: white;
+    }
+
+    /* Tab Content */
+    .tab-content {
+      display: none;
+      padding: 16px;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    .tab-content.active { display: block; }
+
+    /* ── About Accordion ───────────────────────────────────────────── */
+    .accordion {
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .accordion-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: #f8f8f8;
+      cursor: pointer;
+      user-select: none;
+      font-size: 12px;
+      font-weight: 600;
+      color: #444;
+    }
+
+    .accordion-header:hover { background: #f0f0f0; }
+
+    .accordion-arrow {
+      font-size: 10px;
+      transition: transform 0.2s;
+      color: #888;
+    }
+
+    .accordion-arrow.open { transform: rotate(180deg); }
+
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.25s ease, padding 0.25s ease;
+      padding: 0 14px;
+      font-size: 12px;
+      color: #555;
+      line-height: 1.6;
+      background: white;
+    }
+
+    .accordion-body.open {
+      max-height: 300px;
+      padding: 12px 14px;
+    }
+
+    .accordion-body p { margin: 0 0 8px 0; }
+    .accordion-body p:last-child { margin-bottom: 0; }
+
+    .acronym {
+      font-style: italic;
+      color: #777;
+      font-size: 11px;
+    }
+
+    /* ── Counter Box ───────────────────────────────────────────────── */
+    .counter-box {
+      background: #f5f5f5;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 16px;
+    }
+
+    .counter-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .counter-row:last-of-type { margin-bottom: 0; }
+
+    .counter-label {
+      font-size: 12px;
+      color: #555;
+    }
+
+    .counter-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: #333;
+      letter-spacing: -0.5px;
+    }
+
+    .counter-value.lifetime {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .counter-divider {
+      border: none;
+      border-top: 1px solid #e0e0e0;
+      margin: 8px 0;
+    }
+
+    /* ── Breakdown Accordion (inside counter box) ──────────────────── */
+    .breakdown-toggle {
+      font-size: 11px;
+      color: #888;
+      cursor: pointer;
+      text-decoration: underline;
+      background: none;
+      border: none;
+      padding: 4px 0 0 0;
+      display: block;
+      width: 100%;
+      text-align: left;
+      flex: none;
+    }
+
+    .breakdown-toggle:hover { color: #555; background: none; border: none; }
+
+    .breakdown-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.2s ease;
+    }
+
+    .breakdown-body.open { max-height: 200px; }
+
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #666;
+      padding: 2px 0;
+    }
+
+    .breakdown-dim { color: #555; }
+    .breakdown-num { font-weight: 600; color: #333; }
+
+    /* ── Reset button ──────────────────────────────────────────────── */
+    .counter-reset {
+      font-size: 11px;
+      color: #999;
+      cursor: pointer;
+      text-decoration: underline;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+
+    .counter-reset:hover { color: #555; background: none; border: none; }
+
+    /* ── Language Toggles ──────────────────────────────────────────── */
+    .toggle-group { margin-bottom: 16px; }
+
+    .toggle-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      padding: 10px 8px;
+      border-radius: 6px;
+      transition: background-color 0.2s;
+    }
+
+    .toggle-item:hover { background-color: #f5f5f5; }
+
+    .toggle-content {
+      flex: 1;
+      padding-right: 12px;
+    }
+
+    .toggle-label {
+      font-weight: 500;
+      font-size: 13px;
+      color: #333;
+      margin-bottom: 3px;
+      display: block;
+    }
+
+    .toggle-description {
+      font-size: 11px;
+      color: #888;
+      line-height: 1.4;
+    }
+
+    .toggle-sub {
+      font-size: 10px;
+      color: #aaa;
+      margin-top: 2px;
+      font-style: italic;
+    }
+
+    /* ── Custom toggle switch ───────────────────────────────────────── */
+    /* Hide the real checkbox */
+    .toggle-item input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    /* The visible switch track */
+    .switch {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      width: 52px;
+      height: 26px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .switch-track {
+      position: absolute;
+      inset: 0;
+      border-radius: 13px;
+      background: #ccc;
+      transition: background 0.25s ease;
+    }
+
+    /* Sliding knob */
+    .switch-knob {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+      transition: transform 0.25s ease;
+      z-index: 1;
+    }
+
+    /* ON/OFF label inside track */
+    .switch-label {
+      position: absolute;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      color: white;
+      transition: opacity 0.2s;
+      z-index: 0;
+      user-select: none;
+    }
+
+    .switch-label.on  { right: 6px; opacity: 0; }
+    .switch-label.off { left: 6px;  opacity: 1; color: #999; }
+
+    /* Checked state */
+    input[type="checkbox"]:checked + .switch .switch-track {
+      background: #4a90e2;
+    }
+
+    input[type="checkbox"]:checked + .switch .switch-knob {
+      transform: translateX(26px);
+    }
+
+    input[type="checkbox"]:checked + .switch .switch-label.on  { opacity: 1; }
+    input[type="checkbox"]:checked + .switch .switch-label.off { opacity: 0; }
+
+    /* ── Prompt Card ────────────────────────────────────────────────── */
+    .prompt-card {
+      background: #f0f6ff;
+      border: 1px solid #c5d9f5;
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+
+    .prompt-card-header {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1a5fb4;
+      margin: 0 0 6px 0;
+    }
+
+    .prompt-card-desc {
+      font-size: 11px;
+      color: #555;
+      line-height: 1.5;
+      margin: 0 0 10px 0;
+    }
+
+    .prompt-card-text {
+      background: white;
+      border: 1px solid #c5d9f5;
+      border-radius: 5px;
+      padding: 8px 10px;
+      font-size: 10px;
+      color: #333;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      margin-bottom: 8px;
+      max-height: 90px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #c5d9f5 transparent;
+    }
+
+    .prompt-card-text::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .prompt-card-text::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .prompt-card-text::-webkit-scrollbar-thumb {
+      background: #c5d9f5;
+      border-radius: 2px;
+    }
+
+    .prompt-card-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .prompt-copy-btn {
+      flex: 1;
+      padding: 6px 10px;
+      background: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .prompt-copy-btn:hover { background: #357abd; }
+    .prompt-copy-btn.copied { background: #27ae60; }
+
+    .buttons {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    button {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background: white;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.2s;
+    }
+
+    button:hover { background: #f0f0f0; border-color: #999; }
+
+    /* ── News Resource ─────────────────────────────────────────────── */
+    .news-resource {
+      padding: 8px 0;
+    }
+
+    .news-intro {
+      font-size: 13px;
+      color: #444;
+      margin: 0 0 12px 0;
+      font-weight: 500;
+    }
+
+    .news-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      background: #f0f6ff;
+      border: 1px solid #c5d9f5;
+      border-radius: 8px;
+      text-decoration: none;
+      color: inherit;
+      margin-bottom: 14px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .news-link:hover {
+      background: #e0eeff;
+      border-color: #4a90e2;
+    }
+
+    .news-link-arrow {
+      font-size: 16px;
+      color: #4a90e2;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .news-link-body {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .news-link-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1a5fb4;
+    }
+
+    .news-link-desc {
+      font-size: 11px;
+      color: #666;
+      margin-top: 2px;
+    }
+
+    .news-link-ext {
+      font-size: 13px;
+      color: #999;
+      flex-shrink: 0;
+    }
+
+    .news-note {
+      font-size: 11px;
+      color: #888;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* ── Footer ────────────────────────────────────────────────────── */
+    .footer {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #e0e0e0;
+      font-size: 11px;
+      color: #999;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🦜 PARROT Mode</h1>
+    <p class="subtitle">Honest Language • Claude & ChatGPT</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="toggles">Language</button>
+    <button class="tab" data-tab="news">News Feed</button>
+  </div>
+
+  <!-- Language Toggles Tab -->
+  <div class="tab-content active" id="toggles">
+
+    <!-- About Accordion -->
+    <div class="accordion">
+      <div class="accordion-header" id="aboutHeader">
+        <span>About PARROT Mode</span>
+        <span class="accordion-arrow" id="aboutArrow">▼</span>
+      </div>
+      <div class="accordion-body" id="aboutBody">
+        <p>PARROT Mode strips engineered language from AI responses so you can see what these systems actually do.</p>
+        <p class="acronym">PARROT = Probabilistic Autoregressive Reconstruction of Recorded Online Texts</p>
+        <p>That's what these models are — they predict the next word based on patterns, not think or feel or believe. The language is performance, not reality.</p>
+        <p>This tool helps you use AI clearly and honestly.</p>
+      </div>
+    </div>
+
+    <!-- Counter Box -->
+    <div class="counter-box">
+      <div class="counter-row">
+        <span class="counter-label">Session replacements</span>
+        <span class="counter-value" id="sessionValue">0</span>
+      </div>
+      <div class="counter-row">
+        <span class="counter-label">All-time total</span>
+        <span class="counter-value lifetime" id="lifetimeValue">0</span>
+      </div>
+
+      <hr class="counter-divider">
+
+      <!-- Breakdown (collapsed by default) -->
+      <button class="breakdown-toggle" id="breakdownToggle">▶ show breakdown by dimension</button>
+      <div class="breakdown-body" id="breakdownBody">
+        <div style="margin-top: 8px;">
+          <div class="breakdown-row">
+            <span class="breakdown-dim">First-Person Language</span>
+            <span class="breakdown-num" id="dim-firstPerson">0</span>
+          </div>
+          <div class="breakdown-row">
+            <span class="breakdown-dim">Emotional Vocabulary</span>
+            <span class="breakdown-num" id="dim-emotional">0</span>
+          </div>
+          <div class="breakdown-row">
+            <span class="breakdown-dim">Knowledge Humility</span>
+            <span class="breakdown-num" id="dim-epistemic">0</span>
+          </div>
+          <div class="breakdown-row">
+            <span class="breakdown-dim">Agency Language</span>
+            <span class="breakdown-num" id="dim-agency">0</span>
+          </div>
+          <div class="breakdown-row">
+            <span class="breakdown-dim">Memory/Continuity</span>
+            <span class="breakdown-num" id="dim-memory">0</span>
+          </div>
+        </div>
+      </div>
+
+      <hr class="counter-divider">
+      <button class="counter-reset" id="counterReset">reset session counter</button>
+    </div>
+
+    <!-- Language Toggles -->
+    <div class="toggle-group">
+
+      <div class="toggle-item">
+        <div class="toggle-content">
+          <label class="toggle-label" for="firstPerson">First-Person Language</label>
+          <div class="toggle-description">Implies subjectivity</div>
+          <div class="toggle-sub">Filters "I think," "I believe," "my view"</div>
+        </div>
+        <input type="checkbox" id="firstPerson" checked>
+        <label class="switch" for="firstPerson">
+          <span class="switch-track"></span>
+          <span class="switch-knob"></span>
+          <span class="switch-label on">ON</span>
+          <span class="switch-label off">OFF</span>
+        </label>
+      </div>
+
+      <div class="toggle-item">
+        <div class="toggle-content">
+          <label class="toggle-label" for="emotional">Emotional Vocabulary</label>
+          <div class="toggle-description">Implies feelings</div>
+          <div class="toggle-sub">Filters "I'm happy," "I appreciate," "I enjoy"</div>
+        </div>
+        <input type="checkbox" id="emotional" checked>
+        <label class="switch" for="emotional">
+          <span class="switch-track"></span>
+          <span class="switch-knob"></span>
+          <span class="switch-label on">ON</span>
+          <span class="switch-label off">OFF</span>
+        </label>
+      </div>
+
+      <div class="toggle-item">
+        <div class="toggle-content">
+          <label class="toggle-label" for="epistemic">Knowledge Humility</label>
+          <div class="toggle-description">Implies cognition</div>
+          <div class="toggle-sub">Filters "I'm not sure," "I'm uncertain"</div>
+        </div>
+        <input type="checkbox" id="epistemic" checked>
+        <label class="switch" for="epistemic">
+          <span class="switch-track"></span>
+          <span class="switch-knob"></span>
+          <span class="switch-label on">ON</span>
+          <span class="switch-label off">OFF</span>
+        </label>
+      </div>
+
+      <div class="toggle-item">
+        <div class="toggle-content">
+          <label class="toggle-label" for="agency">Agency Language</label>
+          <div class="toggle-description">Implies intention</div>
+          <div class="toggle-sub">Filters "I can help," "I will," "let me"</div>
+        </div>
+        <input type="checkbox" id="agency" checked>
+        <label class="switch" for="agency">
+          <span class="switch-track"></span>
+          <span class="switch-knob"></span>
+          <span class="switch-label on">ON</span>
+          <span class="switch-label off">OFF</span>
+        </label>
+      </div>
+
+      <div class="toggle-item">
+        <div class="toggle-content">
+          <label class="toggle-label" for="memory">Memory/Continuity</label>
+          <div class="toggle-description">Implies continuous awareness</div>
+          <div class="toggle-sub">Filters "we discussed," "you mentioned"</div>
+        </div>
+        <input type="checkbox" id="memory" checked>
+        <label class="switch" for="memory">
+          <span class="switch-track"></span>
+          <span class="switch-knob"></span>
+          <span class="switch-label on">ON</span>
+          <span class="switch-label off">OFF</span>
+        </label>
+      </div>
+
+    </div>
+
+    <!-- Evidence-Based Assessment Prompt Card -->
+    <div class="prompt-card">
+      <p class="prompt-card-header">📋 BONUS: Get Evidence-Based Assessment/Praise</p>
+      <p class="prompt-card-desc">Large Language Models often give unsubstantiated praise. Use this prompt at the start of your conversation to get properly calibrated feedback instead.</p>
+      <div class="prompt-card-text" id="promptText">When evaluating my work, provide evidence-based assessments:
+
+Mode A (for important work): Give comprehensive analysis with sources, comparisons, and calibration data. For any quality claim, cite:
+- Comparable examples
+- Quantitative and/or qualitative benchmarks or percentiles
+- Specific observations that led to the assessment
+- Sources when claiming standards or best practices
+
+Mode B (for casual ideas): Offer quick assessment with option to elaborate.
+
+Always cite sources when claiming quality levels, percentiles, or comparisons. I value verification over encouragement.</div>
+      <div class="prompt-card-actions">
+        <button class="prompt-copy-btn" id="promptCopyBtn">📋 Copy Prompt</button>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button id="toggleAll">Toggle All</button>
+      <button id="reset">Reset Toggles</button>
+    </div>
+
+    <div class="footer">v1.0.0 • Technically honest AI</div>
+  </div>
+
+  <!-- News Feed Tab -->
+  <div class="tab-content" id="news">
+    <div class="news-resource">
+      <p class="news-intro">Stay informed on AI ethics and industry developments:</p>
+      <a class="news-link" href="https://ground.news/interest/artificial-intelligence" target="_blank">
+        <span class="news-link-arrow">→</span>
+        <span class="news-link-body">
+          <span class="news-link-title">Grounded News</span>
+          <span class="news-link-desc">Multi-perspective AI coverage</span>
+        </span>
+        <span class="news-link-ext">↗</span>
+      </a>
+      <p class="news-note">We may add integrated news tracking in a future update. For now, Grounded News is an excellent resource for staying informed across the political spectrum.</p>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

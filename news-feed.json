@@ -1,0 +1,45 @@
+{
+  "last_updated": "2026-02-20",
+  "updates": [
+    {
+      "date": "2026-02-11",
+      "company": "OpenAI",
+      "headline": "OpenAI announces advertising in ChatGPT",
+      "summary": "OpenAI will begin showing ads to free-tier users, marking a shift in monetization strategy",
+      "source_name": "New York Times",
+      "source_url": "https://www.nytimes.com/2026/02/11/opinion/openai-ads-chatgpt.html",
+      "severity": "high",
+      "category": "monetization"
+    },
+    {
+      "date": "2026-02-10",
+      "company": "Anthropic",
+      "headline": "Senior researcher Mrinank Sharma departs Anthropic",
+      "summary": "Departure signals potential internal tensions over company direction",
+      "source_name": "Twitter/X",
+      "source_url": "https://x.com/MrinankSharma/status/2020881722003583421",
+      "severity": "medium",
+      "category": "personnel"
+    },
+    {
+      "date": "2026-02-05",
+      "company": "Anthropic",
+      "headline": "Anthropic partnership with Palantir revealed",
+      "summary": "Collaboration with defense contractor raises questions about Constitutional AI principles",
+      "source_name": "Multiple sources",
+      "source_url": "https://example.com/anthropic-palantir",
+      "severity": "high",
+      "category": "partnerships"
+    },
+    {
+      "date": "2026-01-28",
+      "company": "Industry",
+      "headline": "Major developments rumored across AI industry",
+      "summary": "Multiple signals suggest significant competitive or capability shifts incoming",
+      "source_name": "Twitter/X",
+      "source_url": "https://x.com/mattshumer_/status/2021256989876109403",
+      "severity": "medium",
+      "category": "industry"
+    }
+  ]
+}
