@@ -27,4 +27,4 @@ For questions about this privacy policy, contact: rscarlos@duodevelopment.org
 
 ---
 
-*PARROT Mode is built by Duo Development*
+*PARROT Mode is built by [Duo Development]([url](https://www.duodevelopment.org/))*
